@@ -1,0 +1,15 @@
+//form
+
+export const CHANGE_NICKNAME = "CHANGE_NICKNAME";
+export const CHANGE_EMAIL = "CHANGE_EMAIL";
+export const CHANGE_IPADRESS = "CHANGE_IP_ADRESS";
+
+//errors
+export const HANDLE_NICKAME_ERROR = "SHOW_NICKAME_ERROR";
+export const HANDLE_EMAIL_ERROR = "SHOW_EMAIL_ERROR";
+export const HANDLE_IPADRESS_ERROR = "SHOW_IPADRESS_ERROR";
+
+//userList
+export const ADD_USER = "ADD_USER";
+export const DELETE_USER = "DELETE_USER";
+export const DELETE_USER_LIST = "DELETE_USER_LIST";

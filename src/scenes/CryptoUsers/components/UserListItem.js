@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 
 const UserListItem = (props) =>{
@@ -10,5 +11,11 @@ const styles = theme => ({
 
   }
 });
+
+
+UserListItem.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
 
 export default withStyles(styles)(UserListItem);

@@ -11,21 +11,22 @@ const formDate = {
 };
 
 const formReducer = (state = formDate, action) => {
+  console.log(action.payload);
   switch (action.type) {
     case CHANGE_NICKNAME:
-      const newNickname = state.nickname + action.payload;
+      const newNickname = action.payload;
       return {
         ...state,
         nickname: newNickname
       };
     case CHANGE_EMAIL:
-      const newEmail = state.email + action.payload;
+      const newEmail = action.payload;
       return {
         ...state,
         email: newEmail
       };
     case CHANGE_IPADRESS:
-      const newIpadress = state.ipadress + action.payload;
+      const newIpadress = action.payload;
       return {
         ...state,
         ipadress: newIpadress

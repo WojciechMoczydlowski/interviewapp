@@ -1,5 +1,4 @@
 //form
-
 export const CHANGE_NICKNAME = "CHANGE_NICKNAME";
 export const CHANGE_EMAIL = "CHANGE_EMAIL";
 export const CHANGE_IPADRESS = "CHANGE_IP_ADRESS";

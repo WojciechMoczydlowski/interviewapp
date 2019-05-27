@@ -1,35 +1,31 @@
 import {
   CHANGE_NICKNAME,
   CHANGE_EMAIL,
-  CHANGE_IPADRESS
+  CHANGE_IPADRESS,
 } from "../actions/types";
 
 const formDate = {
   nickname: "",
   email: "",
-  ipadress: "",
+  ipadress: ""
 };
 
 const formReducer = (state = formDate, action) => {
-  console.log(action.payload);
   switch (action.type) {
     case CHANGE_NICKNAME:
-      const newNickname = action.payload;
       return {
         ...state,
-        nickname: newNickname
+        nickname: action.payload
       };
     case CHANGE_EMAIL:
-      const newEmail = action.payload;
       return {
         ...state,
-        email: newEmail
+        email: action.payload
       };
     case CHANGE_IPADRESS:
-      const newIpadress = action.payload;
       return {
         ...state,
-        ipadress: newIpadress
+        ipadress: action.payload
       };
     default:
       return state;

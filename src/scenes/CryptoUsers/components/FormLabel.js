@@ -5,61 +5,107 @@ import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import TextField from "@material-ui/core/TextField";
-
-import { changeNickname , changeEmail, changeIpadress } from "../../../redux/actions/formActions";
+import ActionButton from "./ActionButton";
+import {
+  changeNickname,
+  changeEmail,
+  changeIpadress
+} from "../../../redux/actions/formActions";
+import {
+  addUser,
+  deleteUserList
+} from "../../../redux/actions/userListActions";
 
 class FormLabel extends Component {
-
-  handleNicknameChange = (event) =>{
+  handleNicknameChange = event => {
     this.props.changeNickname(event.target.value);
-  }
-  handleEmailChange = (event) =>{
+  };
+  handleEmailChange = event => {
     this.props.changeEmail(event.target.value);
-  }
-  handleIpadressChange = (event) =>{
+  };
+  handleIpadressChange = event => {
     this.props.changeIpadress(event.target.value);
-  }
+  };
+
+  handleAddUser = event => {
+    event.preventDefault();
+    let validationComplete = false;
+    let emailValidation = this.validateEmail(this.props.email);
+    let ipadressValidation = this.validateIpadress(this.props.ipadress);
+    console.log(emailValidation);
+    console.log(ipadressValidation);
+    console.log(this.props.users);
+  };
+
+  handleDeleteList = event => {
+    event.preventDefault();
+    console.log("deleteuser");
+  };
+
+  validateEmail = email => {
+    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  validateIpadress = ipadress => {
+    let re = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+    return re.test(String(ipadress));
+  };
   render() {
+   
     const { classes } = this.props;
     const displayError = true;
-  return (
-    <form className={classes.container} noValidate autoComplete="off">
-      <div className={classes.flexWrapperRow}>
-        <TextField
-          id="standard-name"
-          label="Nickname"
-          className={classes.textField}
-          //value={values.name}
-           onChange={this.handleNicknameChange}
-          margin="normal"
-        />
-        <Error message="nickname errror" display={displayError} />
-      </div>
-      <div className={classes.flexWrapperRow}>
-        <TextField
-          id="standard-name"
-          label="Email"
-          className={classes.textField}
-          // value={values.name}
-          onChange={this.handleEmailChange}
-          margin="normal"
-        />
-        <Error message="nickname errror" display={displayError}  />
-      </div>
-      <div className={classes.flexWrapperRow}>
-        <TextField
-          id="standard-name"
-          label="IP adress"
-          className={classes.textField}
-          //value={values.name}
-          onChange={this.handleIpadressChange}
-          margin="normal"
-        />
-        <Error message="nickname errror" display={displayError}  />
-      </div>
-    </form>
-  );
-}};
+    return (
+      <form className={classes.container} noValidate autoComplete="off">
+        <div className={classes.flexWrapperRow}>
+          <TextField
+            id="standard-name"
+            label="Nickname"
+            className={classes.textField}
+            //value={values.name}
+            onChange={this.handleNicknameChange}
+            margin="normal"
+          />
+          <Error message="nickname errror" display={displayError} />
+        </div>
+        <div className={classes.flexWrapperRow}>
+          <TextField
+            id="standard-name"
+            label="Email"
+            className={classes.textField}
+            // value={values.name}
+            onChange={this.handleEmailChange}
+            margin="normal"
+          />
+          <Error message="nickname errror" display={displayError} />
+        </div>
+        <div className={classes.flexWrapperRow}>
+          <TextField
+            id="standard-name"
+            label="IP adress"
+            className={classes.textField}
+            //value={values.name}
+            onChange={this.handleIpadressChange}
+            margin="normal"
+          />
+          <Error message="nickname errror" display={displayError} />
+        </div>
+        <div className={classes.flexWrapperRow + classes.root}>
+          <ActionButton
+            backgroundColor="#23DBBB"
+            title="Add user"
+            handleClick={this.handleAddUser}
+          />
+          <ActionButton
+            backgroundColor="red"
+            title="Delete list"
+            handleClick={this.handleDeleteList}
+          />
+        </div>
+      </form>
+    );
+  }
+}
 const styles = theme => ({
   root: {},
   container: {
@@ -69,13 +115,17 @@ const styles = theme => ({
   textField: {
     width: "300px"
   },
-  flexWrapperRow:{
-    display: 'flex',
-    flexDirection: 'row',
+  flexWrapperRow: {
+    display: "flex",
+    flexDirection: "row"
   }
 });
 
 const mapStateToProps = state => ({
+  nickname: state.form.nickname,
+  email: state.form.email,
+  ipadress: state.form.ipadress,
+  users: state.userList.usersArr,
 });
 
 const mapDispatchToProps = dispatch => {
@@ -88,6 +138,12 @@ const mapDispatchToProps = dispatch => {
     },
     changeIpadress: ipadress => {
       dispatch(changeIpadress(ipadress));
+    },
+    addUser: user => {
+      dispatch(addUser(user));
+    },
+    deleteUserList: () => {
+      dispatch(deleteUserList());
     }
   };
 };

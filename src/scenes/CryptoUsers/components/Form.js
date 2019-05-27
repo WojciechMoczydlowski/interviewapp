@@ -16,7 +16,7 @@ import {
   deleteUserList
 } from "../../../redux/actions/userListActions";
 
-class FormLabel extends Component {
+class Form extends Component {
   handleNicknameChange = event => {
     this.props.changeNickname(event.target.value);
   };
@@ -33,19 +33,31 @@ class FormLabel extends Component {
     const nickname = this.props.nickname;
     const email = this.props.email;
     const ipadress = this.props.ipadress;
-    let validationComplete = false;
+    const users = this.props.users;
+    let validationComplete = true;
 
-    let emailValidation = this.validateEmail(this.props.email);
-    let ipadressValidation = this.validateIpadress(this.props.ipadress);
-    
-    validationComplete =  emailValidation && ipadressValidation ? true : false;
-    this.props.addUser({nickname: this.props.nickname , email: this.props.email, ipadress: this.props.ipadress});
-    validationComplete = false;
-  };
-
-  handleDeleteList = event => {
-    event.preventDefault();
-    console.log("deleteuser");
+    if(!this.validateEmail(email)){
+      validationComplete = false;
+      console.log('validateEmail');
+    };
+    if(!this.uniqueEmailValidator(users,email)){
+      validationComplete = false;
+      console.log('uniqueEmailValidator');
+    };
+    if(!this.validateIpadress(ipadress)){
+      validationComplete = false;
+      console.log('validateIpadress');
+    };
+    if(!this.uniqueIpadressValidator(users,ipadress)){
+      validationComplete = false;
+      console.log('uniqueIpadressValidator');
+    };
+    if(validationComplete){
+      this.props.addUser({nickname, email, ipadress});
+      this.props.changeNickname('');
+      this.props.changeEmail('');
+      this.props.changeIpadress('');
+    }
   };
 
   validateEmail = email => {
@@ -57,14 +69,31 @@ class FormLabel extends Component {
     let re = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
     return re.test(String(ipadress));
   };
+
+  uniqueEmailValidator = (users,email) =>{
+    let result = users.find(item => item.email === email);
+    return result === undefined ? true : false;
+  }
+
+  uniqueIpadressValidator = (users,ipadress) =>{
+    let result = users.find(item => item.ipadress === ipadress);
+    return result === undefined ? true : false;
+  }
+
+  handleDeleteList = event => {
+    event.preventDefault();
+    console.log("deleteuser");
+  };
   render() {
     console.log(this.props.users);
     const { classes } = this.props;
+    const {nickname , email , ipadress} = this.props;
     const displayError = false;
     return (
       <form className={classes.container} noValidate autoComplete="off">
         <div className={classes.flexWrapperRow}>
           <TextField
+            value = {nickname}
             label="Nickname"
             className={classes.textField}
             //value={values.name}
@@ -75,6 +104,7 @@ class FormLabel extends Component {
         </div>
         <div className={classes.flexWrapperRow}>
           <TextField
+            value = {email}
             label="Email"
             className={classes.textField}
             // value={values.name}
@@ -85,6 +115,7 @@ class FormLabel extends Component {
         </div>
         <div className={classes.flexWrapperRow}>
           <TextField
+            value = {ipadress}
             label="IP adress"
             className={classes.textField}
             //value={values.name}
@@ -151,7 +182,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-FormLabel.propTypes = {
+Form.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
@@ -161,4 +192,4 @@ export default compose(
     mapDispatchToProps
   ),
   withStyles(styles)
-)(FormLabel);
+)(Form);

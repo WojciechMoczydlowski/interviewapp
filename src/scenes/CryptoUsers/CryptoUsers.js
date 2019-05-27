@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import FormLabel from "./components/FormLabel";
+import Form from "./components/Form";
 import UserList from "./components/UserList";
 import UserListItem from "./components/UserListItem";
 import Card from '@material-ui/core/Card';
@@ -11,7 +11,7 @@ const CryptoUsers = props => {
   return (
     <Card className = {classes.root}>
       <h2 className = {classes.title}>Crypto users</h2>
-      <FormLabel />
+      <Form/>
       <UserList/>
       <UserListItem />
     </Card>

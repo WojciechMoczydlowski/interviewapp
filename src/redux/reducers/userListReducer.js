@@ -5,18 +5,18 @@ const users = {
 };
 
 const userListReducer = (state = users, action) => {
+  console.log(action.type);
   switch (action.type) {
     case ADD_USER:
       const user = {
         nickname: action.payload.nickname,
         email: action.payload.email,
         ipadress: action.payload.ipadress,
-        id: action.payload.id
       };
-      const newUsersArr = [...state, user];
+      const newUsersArr = [...state.usersArr, user];
       return {
         ...state,
-        users: newUsersArr
+        usersArr: newUsersArr
       };
     case DELETE_USER:
       return {

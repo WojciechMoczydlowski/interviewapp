@@ -29,12 +29,18 @@ class FormLabel extends Component {
 
   handleAddUser = event => {
     event.preventDefault();
+    
+    const nickname = this.props.nickname;
+    const email = this.props.email;
+    const ipadress = this.props.ipadress;
     let validationComplete = false;
+
     let emailValidation = this.validateEmail(this.props.email);
     let ipadressValidation = this.validateIpadress(this.props.ipadress);
-    console.log(emailValidation);
-    console.log(ipadressValidation);
-    console.log(this.props.users);
+    
+    validationComplete =  emailValidation && ipadressValidation ? true : false;
+    this.props.addUser({nickname: this.props.nickname , email: this.props.email, ipadress: this.props.ipadress});
+    validationComplete = false;
   };
 
   handleDeleteList = event => {
@@ -52,14 +58,13 @@ class FormLabel extends Component {
     return re.test(String(ipadress));
   };
   render() {
-   
+    console.log(this.props.users);
     const { classes } = this.props;
-    const displayError = true;
+    const displayError = false;
     return (
       <form className={classes.container} noValidate autoComplete="off">
         <div className={classes.flexWrapperRow}>
           <TextField
-            id="standard-name"
             label="Nickname"
             className={classes.textField}
             //value={values.name}
@@ -70,7 +75,6 @@ class FormLabel extends Component {
         </div>
         <div className={classes.flexWrapperRow}>
           <TextField
-            id="standard-name"
             label="Email"
             className={classes.textField}
             // value={values.name}
@@ -81,7 +85,6 @@ class FormLabel extends Component {
         </div>
         <div className={classes.flexWrapperRow}>
           <TextField
-            id="standard-name"
             label="IP adress"
             className={classes.textField}
             //value={values.name}
@@ -90,7 +93,7 @@ class FormLabel extends Component {
           />
           <Error message="nickname errror" display={displayError} />
         </div>
-        <div className={classes.flexWrapperRow + classes.root}>
+        <div className={classes.flexWrapperRow}>
           <ActionButton
             backgroundColor="#23DBBB"
             title="Add user"

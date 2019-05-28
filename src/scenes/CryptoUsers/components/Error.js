@@ -7,20 +7,24 @@ const ErrorComp = props => {
   const { message, display } = props;
   return (
     <div className={classes.root}>
-      {display ? <div>{message}</div> : <div />}
+      {display ? <div className={classes.error}>{message}</div> : <div />}
     </div>
   );
 };
 const styles = theme => ({
   root: { display: 'flex',
-alignItems: 'center',
-paddingLeft: '35px'
-}
+  alignItems: 'center',
+  paddingLeft: '35px',
+},
+error: { 
+backgroundColor: '#FBE2ED',
+color:'#CC0000',
+padding:'10px',
+borderRadius: '10px',
+},
 });
 
 ErrorComp.propTypes = {
     classes: PropTypes.object.isRequired
   };
-  
-
 export default withStyles(styles)(ErrorComp);

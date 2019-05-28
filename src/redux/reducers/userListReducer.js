@@ -19,12 +19,14 @@ const userListReducer = (state = users, action) => {
       };
     case DELETE_USER:
       return {
-        ...state
+        ...state,   
       };
     case DELETE_USER_LIST:
-      return {
-        ...state
-      };
+        const emptyArr = [];
+        return {
+          ...state,
+          usersArr: emptyArr,
+        };
     default:
       return state;
   }

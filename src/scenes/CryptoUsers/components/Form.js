@@ -89,9 +89,9 @@ class Form extends Component {
     return result === undefined ? true : false;
   };
 
-  handleDeleteList = event => {
+  handleDeleteList = (event) => {
     event.preventDefault();
-    console.log("deleteuser");
+    this.props.deleteUserList();
   };
   render() {
     console.log(this.props.users);

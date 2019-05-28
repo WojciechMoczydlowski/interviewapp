@@ -4,17 +4,17 @@ import {
   HANDLE_IPADRESS_ERROR,
 } from "./types";
 
-export const showNicknameError = (payload) => ({
+export const handleNicknameError = (payload) => ({
   type: HANDLE_NICKAME_ERROR,
   payload
 });
 
-export const showEmailError = (payload) => ({
+export const handleEmailError = (payload) => ({
   type: HANDLE_EMAIL_ERROR,
   payload
 });
 
-export const showIpadressError = (payload) => ({
+export const handleIpadressError = (payload) => ({
   type: HANDLE_IPADRESS_ERROR,
   payload
 });

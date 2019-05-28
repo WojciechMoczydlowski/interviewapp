@@ -5,33 +5,41 @@ import {
 } from "../actions/types";
 
 const errors = {
-  nicknameErrorDispay: false,
-  nicknameErrorMessage: "",
-  emailErrorDispay: false,
-  emailErrorMessage: "",
-  ipadressErrorDisplay: false,
-  ipadressErrorMessage: ""
+  nicknameError:{
+    dispay: false,
+    message: "",
+  },
+  emailError:{
+    dispay: false,
+    message: "",
+  },
+  ipadressError:{
+    dispay: false,
+    message: "",
+  },
 };
 
 const errorReducer = (state = errors, action) => {
+  let error;
+  console.log(action.type);
   switch (action.type) {
     case HANDLE_NICKAME_ERROR:
+   error = {display:action.payload.display , message: action.payload.message}
       return {
         ...state,
-        nicknameErrorDispay: action.payload.showError,
-        nicknameErrorMessage: action.payload.errorMessage
+        nicknameError:error
       };
     case HANDLE_EMAIL_ERROR:
+        error  = {display:action.payload.display , message: action.payload.message}
       return {
         ...state,
-        emailErrorDispay: action.payload.showError,
-        emailErrorMessage: action.payload.errorMessage
+        emailError:error
       };
     case HANDLE_IPADRESS_ERROR:
+        error  = {display:action.payload.display , message: action.payload.message}
       return {
         ...state,
-        ipadressErrorDisplay: action.payload.showError,
-        ipadressErrorMessage: action.payload.errorMessage
+      ipadressError:error
       };
     default:
       return state;

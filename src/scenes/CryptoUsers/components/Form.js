@@ -15,8 +15,13 @@ import {
   addUser,
   deleteUserList
 } from "../../../redux/actions/userListActions";
-
+import {
+  handleNicknameError,
+  handleEmailError,
+  handleIpadressError
+} from "../../../redux/actions/errorActions";
 class Form extends Component {
+
   handleNicknameChange = event => {
     this.props.changeNickname(event.target.value);
   };
@@ -29,34 +34,38 @@ class Form extends Component {
 
   handleAddUser = event => {
     event.preventDefault();
-    
+
+   let validationComplete = true;
+
     const nickname = this.props.nickname;
     const email = this.props.email;
     const ipadress = this.props.ipadress;
     const users = this.props.users;
-    let validationComplete = true;
+ 
 
-    if(!this.validateEmail(email)){
+    if (!this.validateEmail(email)) {
       validationComplete = false;
-      console.log('validateEmail');
-    };
-    if(!this.uniqueEmailValidator(users,email)){
+      this.props.handleEmailError({display:true, message:'Wrong Email format'});
+    }
+    if (!this.uniqueEmailValidator(users, email)) {
       validationComplete = false;
-      console.log('uniqueEmailValidator');
-    };
-    if(!this.validateIpadress(ipadress)){
+      this.props.handleEmailError({display:true, message:'This Email is used'});
+    }
+    if (!this.validateIpadress(ipadress)) {
       validationComplete = false;
-      console.log('validateIpadress');
-    };
-    if(!this.uniqueIpadressValidator(users,ipadress)){
+      this.props.handleIpadressError({display:true, message:'Wrong Ip adress format'});
+    }
+    if (!this.uniqueIpadressValidator(users, ipadress)) {
       validationComplete = false;
-      console.log('uniqueIpadressValidator');
-    };
-    if(validationComplete){
-      this.props.addUser({nickname, email, ipadress});
-      this.props.changeNickname('');
-      this.props.changeEmail('');
-      this.props.changeIpadress('');
+      this.props.handleIpadressError({display:true, message:'This Ip adress is used'});
+    }
+    if (validationComplete) {
+      this.props.addUser({ nickname, email, ipadress });
+      this.props.changeNickname("");
+      this.props.changeEmail("");
+      this.props.changeIpadress("");
+      this.props.handleEmailError({display:false, message:''});
+      this.props.handleIpadressError({display:false, message:''});
     }
   };
 
@@ -70,15 +79,15 @@ class Form extends Component {
     return re.test(String(ipadress));
   };
 
-  uniqueEmailValidator = (users,email) =>{
+  uniqueEmailValidator = (users, email) => {
     let result = users.find(item => item.email === email);
     return result === undefined ? true : false;
-  }
+  };
 
-  uniqueIpadressValidator = (users,ipadress) =>{
+  uniqueIpadressValidator = (users, ipadress) => {
     let result = users.find(item => item.ipadress === ipadress);
     return result === undefined ? true : false;
-  }
+  };
 
   handleDeleteList = event => {
     event.preventDefault();
@@ -87,42 +96,45 @@ class Form extends Component {
   render() {
     console.log(this.props.users);
     const { classes } = this.props;
-    const {nickname , email , ipadress} = this.props;
+    const { nickname, email, ipadress, users } = this.props;
+    const { emailError , ipadressError} = this.props;
+    const displayDeleteListButton = users.length > 0 ? true : false;
     const displayError = false;
     return (
       <form className={classes.container} noValidate autoComplete="off">
         <div className={classes.flexWrapperRow}>
           <TextField
-            value = {nickname}
+            value={nickname}
             label="Nickname"
             className={classes.textField}
             //value={values.name}
             onChange={this.handleNicknameChange}
             margin="normal"
           />
-          <Error message="nickname errror" display={displayError} />
         </div>
         <div className={classes.flexWrapperRow}>
           <TextField
-            value = {email}
+            value={email}
             label="Email"
             className={classes.textField}
             // value={values.name}
             onChange={this.handleEmailChange}
             margin="normal"
+            error={emailError.display}
           />
-          <Error message="nickname errror" display={displayError} />
+          <Error message={emailError.message} display={emailError.display} />
         </div>
         <div className={classes.flexWrapperRow}>
           <TextField
-            value = {ipadress}
+            value={ipadress}
             label="IP adress"
             className={classes.textField}
             //value={values.name}
             onChange={this.handleIpadressChange}
             margin="normal"
+            error={ipadressError.display}
           />
-          <Error message="nickname errror" display={displayError} />
+          <Error message={ipadressError.message} display={ipadressError.display} />
         </div>
         <div className={classes.flexWrapperRow}>
           <ActionButton
@@ -130,11 +142,15 @@ class Form extends Component {
             title="Add user"
             handleClick={this.handleAddUser}
           />
-          <ActionButton
-            backgroundColor="red"
-            title="Delete list"
-            handleClick={this.handleDeleteList}
-          />
+          {displayDeleteListButton ? (
+            <ActionButton
+              backgroundColor="red"
+              title="Delete list"
+              handleClick={this.handleDeleteList}
+            />
+          ) : (
+            <div />
+          )}
         </div>
       </form>
     );
@@ -160,6 +176,8 @@ const mapStateToProps = state => ({
   email: state.form.email,
   ipadress: state.form.ipadress,
   users: state.userList.usersArr,
+  emailError: state.errors.emailError,
+  ipadressError: state.errors.ipadressError,
 });
 
 const mapDispatchToProps = dispatch => {
@@ -178,6 +196,15 @@ const mapDispatchToProps = dispatch => {
     },
     deleteUserList: () => {
       dispatch(deleteUserList());
+    },
+    handleNicknameError: error => {
+      dispatch(handleNicknameError(error));
+    },
+    handleEmailError: error => {
+      dispatch(handleEmailError(error));
+    },
+    handleIpadressError: error => {
+      dispatch(handleIpadressError(error));
     }
   };
 };

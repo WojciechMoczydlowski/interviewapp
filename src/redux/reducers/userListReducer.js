@@ -5,7 +5,6 @@ const users = {
 };
 
 const userListReducer = (state = users, action) => {
-  console.log(action.type);
   switch (action.type) {
     case ADD_USER:
       const user = {
